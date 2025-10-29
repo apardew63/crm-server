@@ -75,81 +75,10 @@ app.use("/api/projects", projectRouter);
 // app.use('/api/setting', settingRouter)
 // app.use('/api/dashboard', dashboardRouter)
 
-// Health check endpoint
-app.get("/api/health", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Server is running",
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || "development",
-  });
-});
 
-// 404 handler
-app.use("*", (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "Route not found",
-    path: req.originalUrl,
-  });
-});
-
-// Global error handler
-app.use((error, req, res, next) => {
-  console.error("Global error handler:", error);
-
-  // Mongoose validation error
-  if (error.name === "ValidationError") {
-    const errors = Object.values(error.errors).map((err) => err.message);
-    return res.status(400).json({
-      success: false,
-      message: "Validation Error",
-      errors,
-    });
-  }
-
-  // Mongoose duplicate key error
-  if (error.code === 11000) {
-    const field = Object.keys(error.keyPattern)[0];
-    return res.status(409).json({
-      success: false,
-      message: "Duplicate field value",
-      error: `${field} already exists`,
-    });
-  }
-
-  // JWT errors
-  if (error.name === "JsonWebTokenError") {
-    return res.status(401).json({
-      success: false,
-      message: "Invalid token",
-      error: "Token is not valid",
-    });
-  }
-
-  if (error.name === "TokenExpiredError") {
-    return res.status(401).json({
-      success: false,
-      message: "Token expired",
-      error: "Token has expired",
-    });
-  }
-
-  // Default error
-  res.status(error.status || 500).json({
-    success: false,
-    message: error.message || "Internal server error",
-    ...(process.env.NODE_ENV === "development" && { stack: error.stack }),
-  });
-});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
-  // console.log(
-  //   `📱 Allowed Client URLs: http://localhost:3000, http://localhost:3001, http://localhost:3002, http://localhost:3003, ${
-  //     process.env.CLIENT_URL || "none"
-  //   }`
-  // );
   console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
 });
