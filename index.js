@@ -29,12 +29,12 @@ const app = express();
 app.use(helmet());
 app.use(
   cors(
-  //   {
-  //   origin: ["https://infinitum-crm-client-global.vercel.app"], // Frontend origin
-  //   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods
-  //   allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
-  //   credentials: true, // Allow cookies and credentials
-  // }
+    {
+    origin: ["https://infinitum-alpha.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], 
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, 
+  }
 )
 );
 app.use(compression());
