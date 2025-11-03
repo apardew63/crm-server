@@ -225,6 +225,9 @@ class AuthController {
    */
   static async getProfile(req, res) {
     try {
+      // Import Task model here to avoid circular dependency
+      const { default: Task } = await import('../models/Task.js');
+
       const user = await User.findById(req.user._id)
         .populate('manager', 'firstName lastName email designation')
         .select('-password');
@@ -237,10 +240,24 @@ class AuthController {
         });
       }
 
+      // Get task statistics for the user
+      const totalTasks = await Task.countDocuments({ assignedTo: req.user._id });
+      const completedTasks = await Task.countDocuments({
+        assignedTo: req.user._id,
+        status: 'completed'
+      });
+
+      // Add task stats to user object
+      const userWithStats = user.toObject();
+      userWithStats.taskStats = {
+        totalTasks,
+        completedTasks
+      };
+
       res.status(HTTP_STATUS.OK).json({
         success: true,
         message: 'Profile retrieved successfully',
-        data: { user }
+        data: { user: userWithStats }
       });
     } catch (error) {
       console.error('Get profile error:', error);
