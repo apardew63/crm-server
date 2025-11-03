@@ -241,9 +241,9 @@ class AuthController {
       }
 
       // Get task statistics for the user
-      const totalTasks = await Task.countDocuments({ assignedTo: req.user._id });
+      const totalTasks = await Task.countDocuments({ 'assignedTo.user': req.user._id });
       const completedTasks = await Task.countDocuments({
-        assignedTo: req.user._id,
+        'assignedTo.user': req.user._id,
         status: 'completed'
       });
 
