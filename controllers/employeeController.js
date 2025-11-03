@@ -140,6 +140,7 @@ class EmployeeController {
   static async createEmployee(req, res) {
     try {
       const sanitizedData = sanitizeInput(req.body);
+      console.log("Incoming body:", req.body);
       const {
         firstName,
         lastName,
