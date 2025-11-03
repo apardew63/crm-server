@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
   phone: {
     type: String,
     trim: true,
-    match: [/^[\+]?[1-9][\d]{0,15}$/, 'Please provide a valid phone number']
+    match: [/^[\+]?[0-9][\d]{0,14}$/, 'Please provide a valid phone number']
   },
   avatar: {
     type: String,

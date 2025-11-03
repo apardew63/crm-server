@@ -90,6 +90,11 @@ export const validateUserRegistration = [
     .isFloat({ min: 0 })
     .withMessage('Salary cannot be negative'),
 
+  body('phone')
+    .optional()
+    .matches(/^[\+]?[0-9][\d]{0,14}$/)
+    .withMessage('Please provide a valid phone number'),
+
   handleValidationErrors
 ];
 

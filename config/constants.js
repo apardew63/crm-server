@@ -27,7 +27,8 @@ export const USER_DESIGNATIONS = {
   SALES: 'sales',
   HR: 'hr',
   OTHER: 'other'
-};
+}
+
 
 export const TASK_STATUS = {
   PENDING: 'pending',
